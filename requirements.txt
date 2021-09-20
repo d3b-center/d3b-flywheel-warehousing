@@ -1,0 +1,6 @@
+flywheel-sdk
+pandas
+pangres
+psycopg2-binary
+sqlalchemy
+yaspin
