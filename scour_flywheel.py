@@ -3,6 +3,7 @@ Fetch acquisition files linked to project/subject/session labels from Flywheel
 and upload the records to the warehouse DB.
 """
 import os
+import re
 
 import flywheel
 import pandas
@@ -23,7 +24,7 @@ table = "flywheel_export"
 with yaspin(text="Fetching flywheel View data.") as spin:
     view = fw.View(
         columns=["project.label", "subject.label", "session.label", "session.id"],
-        include_ids=False
+        include_ids=False,
     )
     # FIXME: I've replaced read_view_dataframe for now because the current
     # implementation (as of 16.0.0rc1) raises a FutureWarning from pandas
@@ -34,10 +35,11 @@ with yaspin(text="Fetching flywheel View data.") as spin:
         (
             pandas.read_json(
                 fw.read_view_data(view, p.id, decode=False, format="json-flat"),
-                orient="records"
-            ) for p in fw.projects.iter()
+                orient="records",
+            )
+            for p in fw.projects.iter()
         ),
-        ignore_index=True
+        ignore_index=True,
     )
     # meta_df = pandas.concat(
     #     (fw.read_view_dataframe(view, p.id) for p in fw.projects.iter()),
@@ -48,30 +50,49 @@ with yaspin(text="Fetching flywheel View data.") as spin:
 # Get acquisition file details with a find iterator. Not super fast, but
 # somehow infinitely faster than including them in the View.
 
-files = []
-n = 0
-file_cols = ("id", "name", "modality", "created", "modified", "size")
 msg = "Scouring flywheel for acquisition files."
 with yaspin(text=msg) as spin:
+    files = []
+    file_cols = (
+        "id",
+        "name",
+        "size",
+        "modality",
+        "created",
+        "modified",
+        "classification.Intent",
+        "classification.Features",
+        "classification.Measurement",
+        "info.MagneticFieldStrength",
+    )
+
+    def burrow(what, where):
+        for level in f"_{where}".split("."):
+            what = what.get(level)
+        return what
+
     # Using an iter_find filter for "modification>..." is not safe here because
     # attached files can be newer than the acquisition's timestamp.
     for ac in fw.acquisitions.iter():
         session = {"session.id": ac.session}
-        for fi in ac.files:
-            n += 1
-            files.append(session | {f"file.{c}": getattr(fi, c) for c in file_cols})
-            spin.text = f"{msg}  Found: {n}"
+        for f in ac.files:
+            fv = vars(f)
+            files.append(session | {f"file_{c}": burrow(fv, c) for c in file_cols})
+            spin.text = f"{msg}  Found: {len(files)}"
+
     spin.ok("✅")
 
 # Send file records to database.
 
 if files:
     with yaspin(text=f"Submitting {len(files)} records to the database...") as spin:
+        rex = re.compile(r"(?<!_)(?=[A-Z])")
         df = (
             pandas.DataFrame(files)
             .merge(meta_df, how="left", on="session.id")
             .drop(columns=["session.id"])  # we don't need this anymore
             .rename(columns=lambda x: x.replace(".", "_"))  # avoid "." in cols
+            .rename(columns=lambda x: rex.sub('_', x).lower()) # snake to camel
         )
         df.to_sql(
             table, db, index=False, if_exists="replace", chunksize=10000, method="multi"
