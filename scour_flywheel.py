@@ -61,10 +61,14 @@ if all_data:
         .rename(columns=lambda x: x.replace(".", "_"))  # avoid "." in colnames
         .rename(columns=lambda x: rex.sub("_", x).lower())  # camelcase to snake
     )
-    with yaspin(text=f"Submitting {len(df)} records to the database...") as spin:
+    with yaspin(
+        text=f"Submitting {len(df)} records to the '{table}' table in {repr(db.url)}..."
+    ) as spin:
         df.to_sql(
             table, db, index=False, if_exists="replace", chunksize=10000, method="multi"
         )
+        with db.connect() as conn:
+            conn.execute(f"GRANT SELECT ON {table} TO public")
         spin.ok("✅")
 else:
     print("No files found.")
