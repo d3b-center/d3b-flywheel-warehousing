@@ -1,4 +1,4 @@
-@Library(value="d3b-center/d3b-flywheel-warehousing", changelog=false) _
+@Library(value="kids-first/aws-infra-jenkins-shared-libraries", changelog=false) _
 pipeline {
    stage_name_1 = "Installing requirements"
    stage_name_2 = "Copying secrets file from AWS"
