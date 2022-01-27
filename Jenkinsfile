@@ -1,5 +1,5 @@
 @Library(value="kids-first/aws-infra-jenkins-shared-libraries", changelog=false) _
-pipeline {
+simple_pipeline {
    stage_name_1 = "Installing requirements"
    stage_name_2 = "Copying secrets file from AWS"
    stage_name_3 = "Sourcing environment variables"
