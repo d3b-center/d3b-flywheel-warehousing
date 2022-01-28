@@ -5,5 +5,5 @@ simple_pipeline {
    stage_name_3 = "Sourcing environment variables && Scour"
    script_1 = "pip3 install -r requirements.txt"
    script_2 = "aws s3 cp s3://d3b-684194535433-us-east-1-service-secrets/d3b-flywheel-warehousing/app.secrets ."
-   script_3 = "chmod +x app.secrets && source ./app.secrets && python3 scour_flywheel.py"
+   script_3 = "chmod +x app.secrets && ./app.secrets"
 }
