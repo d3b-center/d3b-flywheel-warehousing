@@ -14,6 +14,8 @@ fw_api_token = os.getenv("FLYWHEEL_API_TOKEN")
 db_url = os.getenv("D3B_WAREHOUSE_DB_URL")
 assert fw_api_token and db_url
 
+print("Starting scour")
+
 fw = flywheel.Client(fw_api_token)
 db = create_engine(db_url)
 table = "flywheel_export"
