@@ -1,5 +1,4 @@
-flywheel-sdk
-pandas
-psycopg2-binary
-sqlalchemy
-yaspin
+flywheel_sdk==15.8.0
+pandas==1.4.1
+SQLAlchemy==1.4.32
+yaspin==2.1.0
