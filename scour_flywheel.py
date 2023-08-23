@@ -26,6 +26,12 @@ view = fw.View(
     filename="*",
     match="all",
     columns=[
+         "subject.id",
+        "subject.label",
+        "project.id",
+        "project.label",
+        "acquisition.id",
+        "acquisition.label",
         "file.name",
         "file.size",
         "file.modality",
@@ -33,11 +39,17 @@ view = fw.View(
         "file.classification.Intent",
         "file.classification.Features",
         "file.classification.Measurement",
+        "file.info.dim1",
+        "file.info.dim2",
+        "file.info.SpacingBetweenSlices",
+        "file.info.Manufacturer",
+        "file.info.ManufacturersModelName",
+        "file.info.SoftwareVersions",
         "file.created",
         "file.modified",
     ],
-    include_ids=True,
-    include_labels=True,
+    include_ids=False,
+    include_labels=False,
     process_files=False,
     sort=False,
 )
@@ -48,9 +60,10 @@ all_data = []
 for project in fw.projects.iter():
     pid = project.id
     name = project.label
-    print(f"Fetching view for project {name} ({pid})...")
-    d = json.load(fw.read_view_data(view, pid, decode=False, format="json-flat"))
-    all_data.extend(d)
+    if ((grp == 'd3b') and ('_v2' in name)) or (grp == 'corsica'):
+      print(f"Fetching view for project {name} ({pid})...")
+      d = json.load(fw.read_view_data(view, pid, decode=False, format="json-flat"))
+      all_data.extend(d)
 
 # Send file records to database.
 
