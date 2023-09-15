@@ -17,7 +17,8 @@ print("Starting scour")
 
 fw = flywheel.Client(fw_api_token)
 db = create_engine(db_url)
-table = "flywheel_export"
+table = "mri_export"
+schema = "fw_cloud"
 
 # Get file metadata quickly with Views. This is relatively fast.
 
@@ -26,12 +27,6 @@ view = fw.View(
     filename="*",
     match="all",
     columns=[
-         "subject.id",
-        "subject.label",
-        "project.id",
-        "project.label",
-        "acquisition.id",
-        "acquisition.label",
         "file.name",
         "file.size",
         "file.modality",
@@ -48,8 +43,8 @@ view = fw.View(
         "file.created",
         "file.modified",
     ],
-    include_ids=False,
-    include_labels=False,
+    include_ids=True,
+    include_labels=True,
     process_files=False,
     sort=False,
 )
@@ -76,7 +71,7 @@ if all_data:
     )
     print(f"Submitting {len(df)} records to the '{table}' table in {repr(db.url)}...")
     df.to_sql(
-        table, db, index=False, if_exists="replace", chunksize=10000, method="multi"
+        table,schema, db, index=False, if_exists="replace", chunksize=10000, method="multi"
     )
     with db.connect() as conn:
         conn.execute(f"GRANT SELECT ON {table} TO public")
