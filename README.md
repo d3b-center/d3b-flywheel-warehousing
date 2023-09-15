@@ -1,12 +1,12 @@
 # d3b-flywheel-warehousing
 
-This script can be run anywhere (with appropriate network access, of course) to scrape image metadata from Flywheel and store it in a warehouse database.
+This script can be run anywhere (with appropriate network access, of course) to scrape histology metadata from cbtn_histology project on Flywheel and store it in a warehouse database.
 
 Just run:
 
 ```bash
 pip3 install -r requirements.txt
-python3 scour_flywheel.py
+python3 slide_export.py
 ```
 
 Operation currently depends on two environment variables:
