@@ -17,7 +17,7 @@ print("Starting scour")
 
 fw = flywheel.Client(fw_api_token)
 db = create_engine(db_url)
-table = "mri_export"
+table = "slide_export"
 schema = "fw_cloud"
 
 # Get file metadata quickly with Views. This is relatively fast.
@@ -55,7 +55,7 @@ all_data = []
 for project in fw.projects.iter():
     pid = project.id
     name = project.label
-    if ((grp == 'd3b') and ('_v2' in name)) or (grp == 'corsica'):
+    if name =='CBTN_histology':
       print(f"Fetching view for project {name} ({pid})...")
       d = json.load(fw.read_view_data(view, pid, decode=False, format="json-flat"))
       all_data.extend(d)

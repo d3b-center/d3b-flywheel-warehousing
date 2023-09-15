@@ -2,7 +2,7 @@
 
 -- DROP TABLE IF EXISTS public.flywheel_export;
 
-CREATE TABLE IF NOT EXISTS fw_cloud.mri_export
+CREATE TABLE IF NOT EXISTS fw_cloud.slide_export
 (
     subject_label text COLLATE pg_catalog."default",
     subject_id text COLLATE pg_catalog."default",
