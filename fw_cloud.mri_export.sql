@@ -1,4 +1,4 @@
-CREATE TABLE IF NOT EXISTS fw_cloud.mri_export
+CREATE TABLE IF NOT EXISTS fw_cloud.flywheel_mri_export
 (
     subject_label text COLLATE pg_catalog."default",
     subject_id text COLLATE pg_catalog."default",
