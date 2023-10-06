@@ -14,20 +14,20 @@ This script can be run anywhere (with appropriate network access, of course) to 
 
 Just run:
 
-  1.for fw_cloud.mri_export:
+  1. for fw_cloud.mri_export:
 
-  pip3 install -r requirements.txt
-  python3 mri_export.py
+    pip3 install -r requirements.txt
+    python3 mri_export.py
  
  2. for fw_cloud.slide_export:
  
- pip3 install -r requirements.txt
- python3 slide_export.py
+   pip3 install -r requirements.txt
+   python3 slide_export.py
  
  3. for fw_cloud.report_export:
 
-  pip3 install -r requirements.txt
-  python3 report_export.py
+    pip3 install -r requirements.txt
+    python3 report_export.py
 
 
 
