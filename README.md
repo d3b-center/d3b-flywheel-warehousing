@@ -13,6 +13,7 @@ This script can be run anywhere (with appropriate network access, of course) to 
 
 
 Just run:
+
   1.for fw_cloud.mri_export:
 
   pip3 install -r requirements.txt
