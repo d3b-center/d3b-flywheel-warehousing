@@ -1,12 +1,12 @@
 # d3b-flywheel-warehousing
 
-This script can be run anywhere (with appropriate network access, of course) to scrape image metadata from Flywheel and store it in a warehouse database.
+This script can be run anywhere (with appropriate network access, of course) to scrape mri metadata from all v2 and corsica projects on Flywheel and store it in a warehouse database.
 
 Just run:
 
 ```bash
 pip3 install -r requirements.txt
-python3 scour_flywheel.py
+python3 mri_export.py
 ```
 
 Operation currently depends on two environment variables:
