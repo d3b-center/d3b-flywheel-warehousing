@@ -17,7 +17,7 @@ print("Starting scour")
 
 fw = flywheel.Client(fw_api_token)
 db = create_engine(db_url)
-table = "mri_export"
+table = "flywheel_mri_export"
 
 # Get file metadata quickly with Views. This is relatively fast.
 
