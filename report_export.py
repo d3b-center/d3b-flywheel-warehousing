@@ -17,7 +17,7 @@ print("Starting scour")
 
 fw = flywheel.Client(fw_api_token)
 db = create_engine(db_url)
-table = "report_export"
+table = "flywheel_report_export"
 
 
 # Get file metadata quickly with Views. This is relatively fast.
@@ -52,13 +52,13 @@ view = fw.View(
 
 all_data = []
 # for project in fw.projects.iter():
-for project in fw.projects.iter():
-    pid = project.id
-    name = project.label
-    if name =='CBTN_reports':
-      print(f"Fetching view for project {name} ({pid})...")
-      d = json.load(fw.read_view_data(view, pid, decode=False, format="json-flat"))
-      all_data.extend(d)
+proj_name = 'CBTN_reports'
+project = fw.projects.find_first(f'label={proj_name}')
+pid = project.id
+name = project.label
+print(f"Fetching view for project {name} ({pid})...")
+d = json.load(fw.read_view_data(view, pid, decode=False, format="json-flat"))
+all_data.extend(d)
 
 # Send file records to database.
 
