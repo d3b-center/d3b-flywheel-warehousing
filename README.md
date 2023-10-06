@@ -22,13 +22,13 @@ Just run:
  
  2. for fw_cloud.slide_export:
  
-   pip3 install -r requirements.txt
+    pip3 install -r requirements.txt
    
-   python3 slide_export.py
+    python3 slide_export.py
  
  3. for fw_cloud.report_export:
 
-    pip3 install -r requirements.txt
+     pip3 install -r requirements.txt
 
      python3 report_export.py
 
