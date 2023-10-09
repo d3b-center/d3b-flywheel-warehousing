@@ -54,6 +54,7 @@ all_data = []
 for project in fw.projects.iter():
     pid = project.id
     name = project.label
+    grp = project.group
     if ((grp == 'd3b') and ('_v2' in name)) or (grp == 'corsica'):
       print(f"Fetching view for project {name} ({pid})...")
       d = json.load(fw.read_view_data(view, pid, decode=False, format="json-flat"))
