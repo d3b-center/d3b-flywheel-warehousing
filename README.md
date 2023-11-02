@@ -15,3 +15,6 @@ Operation currently depends on two environment variables:
 |-----------------|-------------|
 | FLYWHEEL_API_TOKEN | Your API token for Flywheel. It looks like `chop.flywheel.io:<random_alphanum>`.<br> D3b has a gsuite service account for this `flywheel@d3b.center`. |
 | D3B_WAREHOUSE_DB_URL | A user/pass authenticated URL<br>like `postgresql://<username>:<password>@<server_uri>/postgres` |
+
+***The job requires full privellege/owner privilege (on the postgres databse side)  given to the service account user inserting data from flywheel to postgres database.
+The job will fail if this privilege is missing**********
