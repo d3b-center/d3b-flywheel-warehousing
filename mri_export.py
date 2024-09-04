@@ -26,10 +26,13 @@ view = fw.View(
     filename="*",
     match="all",
     columns=[
+        "file.id",
         "file.name",
         "file.size",
+        "file.type",
         "file.modality",
         "file.info.MagneticFieldStrength",
+        "file.info.BodyPartExamined",
         "file.classification.Intent",
         "file.classification.Features",
         "file.classification.Measurement",
@@ -69,6 +72,13 @@ if all_data:
         .rename(columns=lambda x: x.replace(".", "_"))  # avoid "." in colnames
         .rename(columns=lambda x: rex.sub("_", x).lower())  # camelcase to snake
     )
+
+    df['session_age_days']  = df['session_label'].str.split('d_').str[0].astype(int) # days
+
+    df['acquisition_number'] = df['acquisition_label'].str.split(' - ').str[0].astype(int)
+    acq_counts = df['acquisition_id'].value_counts()
+    df['session_n_total_acquisitions'] = df['acquisition_id'].map(acq_counts)
+
     print(f"Submitting {len(df)} records to the '{table}' table in {repr(db.url)}...")
     df.to_sql(
         table, db, schema = "fw_cloud", index=False, if_exists="replace", chunksize=10000, method="multi"
