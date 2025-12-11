@@ -29,7 +29,6 @@ view = fw.View(
         "file.id",
         "file.name",
         "file.size",
-        "file.type",
         "file.modality",
         "file.info.MagneticFieldStrength",
         "file.info.BodyPartExamined",
